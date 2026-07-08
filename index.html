@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Calendar Planner</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+   
+    <div class="calendar">
+        
+      
+        <div class="calendar-head">
+            <button id="prevBtn"> < </button>
+            <h2 id="monthYearTitle">Month Year</h2>
+            <button id="nextBtn"> > </button>
+        </div>
+
+      
+        <div class="weekdays">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thur</div>
+            <div>Fri</div>
+            <div>Sat</div>
+        </div>
+
+        <div class="days" id="daysGrid"></div>
+        
+    </div>
+
+  
+    <div class="calendar_display" id="calendar_display">
+        <div class="modal-content">
+            
+            <h3 id="modalDateTitle">Date</h3>
+            <textarea id="noteInput" placeholder="Write your notes or plans here..."></textarea>
+            
+          
+            <div class="actions">
+                <button class="btn-delete" id="deleteBtn">Delete</button>
+                <button class="btn-cancel" id="cancelBtn">Cancel</button>
+                <button class="btn-save" id="saveBtn">Save</button>
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
