@@ -8,17 +8,14 @@
 </head>
 <body>
 
-   
     <div class="calendar">
-        
-      
+
         <div class="calendar-head">
-            <button id="prevBtn"> < </button>
-            <h2 id="monthYearTitle">Month Year</h2>
-            <button id="nextBtn"> > </button>
+            <button id="backBtn"> < </button>
+            <h2 id="topTitle">Month Year</h2>
+            <button id="fwdBtn"> > </button>
         </div>
 
-      
         <div class="weekdays">
             <div>Sun</div>
             <div>Mon</div>
@@ -29,24 +26,22 @@
             <div>Sat</div>
         </div>
 
-        <div class="days" id="daysGrid"></div>
-        
+        <div class="days" id="dayBox"></div>
+
     </div>
 
-  
-    <div class="calendar_display" id="calendar_display">
+    <div class="calendar_display" id="popup">
         <div class="modal-content">
-            
-            <h3 id="modalDateTitle">Date</h3>
-            <textarea id="noteInput" placeholder="Write your notes or plans here..."></textarea>
-            
-          
+
+            <h3 id="popupTitle">Date</h3>
+            <textarea id="notesBox" placeholder="Write your notes or plans here..."></textarea>
+
             <div class="actions">
-                <button class="btn-delete" id="deleteBtn">Delete</button>
-                <button class="btn-cancel" id="cancelBtn">Cancel</button>
-                <button class="btn-save" id="saveBtn">Save</button>
+                <button class="btn-delete" id="delBtn">Delete</button>
+                <button class="btn-cancel" id="closeBtn">Cancel</button>
+                <button class="btn-save" id="keepBtn">Save</button>
             </div>
-            
+
         </div>
     </div>
 

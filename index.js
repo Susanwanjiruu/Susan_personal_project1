@@ -1,133 +1,110 @@
+let curDate = new Date();
+let pickedDay = "";
 
-let currentDate = new Date();
-let selectedDateKey = ""; 
+let savedNotes = JSON.parse(localStorage.getItem('calendarNotes')) || {};
 
+const topTitle = document.getElementById("topTitle");
+const dayBox = document.getElementById("dayBox");
+const popup = document.getElementById("popup");
+const popupTitle = document.getElementById("popupTitle");
+const notesBox = document.getElementById("notesBox");
 
-let notesStorage = JSON.parse(localStorage.getItem('calendarNotes')) || {};
-
-
-const monthYearTitle = document.getElementById("monthYearTitle");
-const daysGrid = document.getElementById("daysGrid");
-const calendarDisplay = document.getElementById("calendar_display");
-const modalDateTitle = document.getElementById("modalDateTitle");
-const noteInput = document.getElementById("noteInput");
-
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-const saveBtn = document.getElementById("saveBtn");
-const cancelBtn = document.getElementById("cancelBtn");
-const deleteBtn = document.getElementById("deleteBtn");
+const backBtn = document.getElementById("backBtn");
+const fwdBtn = document.getElementById("fwdBtn");
+const keepBtn = document.getElementById("keepBtn");
+const closeBtn = document.getElementById("closeBtn");
+const delBtn = document.getElementById("delBtn");
 
 const months = [
-    "January", "February", "March", "April", "May", "June", 
+    "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
 
+function drawCalendar() {
+    const year = curDate.getFullYear();
+    const month = curDate.getMonth();
 
-function renderCalendar() {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
+    topTitle.textContent = months[month] + " " + year;
 
-   
-    monthYearTitle.textContent = months[month] + " " + year;
+    dayBox.innerHTML = "";
 
-    
-    daysGrid.innerHTML = "";
+    const startGap = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    
-    const firstDayIndex = new Date(year, month, 1).getDay();
-    
-   
-    const totalDays = new Date(year, month + 1, 0).getDate();
-
-   
-    for (let i = 0; i < firstDayIndex; i++) {
-        const emptyCell = document.createElement("div");
-        emptyCell.classList.add("day-cell", "empty");
-        daysGrid.appendChild(emptyCell);
+    for (let i = 0; i < startGap; i++) {
+        const blank = document.createElement("div");
+        blank.classList.add("day-cell", "empty");
+        dayBox.appendChild(blank);
     }
 
-  
-    for (let day = 1; day <= totalDays; day++) {
+    for (let day = 1; day <= daysInMonth; day++) {
         const cell = document.createElement("div");
         cell.classList.add("day-cell");
 
-       
-        const dateKey = year + "-" + String(month + 1).padStart(2, '0') + "-" + String(day).padStart(2, '0');
-        
-      
+        const key = year + "-" + String(month + 1).padStart(2, '0') + "-" + String(day).padStart(2, '0');
+
         cell.innerHTML = '<span class="day-number">' + day + '</span><div class="note-dot"></div>';
 
-       
-        if (notesStorage[dateKey]) {
+        if (savedNotes[key]) {
             cell.classList.add("has-note");
         }
 
         cell.addEventListener("click", function() {
-            openPlannerModal(dateKey, day, months[month], year);
+            showPopup(key, day, months[month], year);
         });
 
-        daysGrid.appendChild(cell);
+        dayBox.appendChild(cell);
     }
 }
 
+function showPopup(key, day, monthName, year) {
+    pickedDay = key;
+    popupTitle.textContent = monthName + " " + day + ", " + year;
 
-function openPlannerModal(dateKey, day, monthName, year) {
-    selectedDateKey = dateKey;
-    modalDateTitle.textContent = monthName + " " + day + ", " + year;
-    
-  
-    noteInput.value = notesStorage[dateKey] || "";
-    
-    
-    calendarDisplay.classList.add("active");
-    noteInput.focus();
+    notesBox.value = savedNotes[key] || "";
+
+    popup.classList.add("active");
+    notesBox.focus();
 }
 
-
-function closeModal() {
-    calendarDisplay.classList.remove("active");
-    selectedDateKey = "";
-    noteInput.value = "";
+function hidePopup() {
+    popup.classList.remove("active");
+    pickedDay = "";
+    notesBox.value = "";
 }
 
-
-prevBtn.addEventListener("click", function() {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    renderCalendar();
+backBtn.addEventListener("click", function() {
+    curDate.setMonth(curDate.getMonth() - 1);
+    drawCalendar();
 });
 
-nextBtn.addEventListener("click", function() {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    renderCalendar();
+fwdBtn.addEventListener("click", function() {
+    curDate.setMonth(curDate.getMonth() + 1);
+    drawCalendar();
 });
 
-cancelBtn.addEventListener("click", closeModal);
+closeBtn.addEventListener("click", hidePopup);
 
+keepBtn.addEventListener("click", function() {
+    const text = notesBox.value.trim();
 
-saveBtn.addEventListener("click", function() {
-    const trimmedNote = noteInput.value.trim();
-    
-    if (trimmedNote) {
-        notesStorage[selectedDateKey] = trimmedNote;
+    if (text) {
+        savedNotes[pickedDay] = text;
     } else {
-        delete notesStorage[selectedDateKey];
+        delete savedNotes[pickedDay];
     }
-    
-  
-    localStorage.setItem('calendarNotes', JSON.stringify(notesStorage));
-    closeModal();
-    renderCalendar();
+
+    localStorage.setItem('calendarNotes', JSON.stringify(savedNotes));
+    hidePopup();
+    drawCalendar();
 });
 
-
-deleteBtn.addEventListener("click", function() {
-    delete notesStorage[selectedDateKey];
-    localStorage.setItem('calendarNotes', JSON.stringify(notesStorage));
-    closeModal();
-    renderCalendar();
+delBtn.addEventListener("click", function() {
+    delete savedNotes[pickedDay];
+    localStorage.setItem('calendarNotes', JSON.stringify(savedNotes));
+    hidePopup();
+    drawCalendar();
 });
 
-
-renderCalendar();
+drawCalendar();
 
