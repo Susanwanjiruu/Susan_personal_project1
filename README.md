@@ -1,6 +1,6 @@
 # Calendar Planner
 
-A lightweight browser-based calendar planner built with HTML, CSS, and vanilla JavaScript. It lets users move between months and save notes or plans against individual dates.
+A browser-based calendar planner built with HTML, CSS, and JavaScript, featuring date-based notes.
 
 ## Features
 
